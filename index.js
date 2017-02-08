@@ -1,26 +1,26 @@
-var
+let
   EventEmitter = require('eventemitter2').EventEmitter2,
-  packageInfo = require('../../package.json'),
+  packageInfo = require('./package.json'),
   path = require('path'),
-  Dsl = require('./dsl'),
-  EntryPoints = require('./core/entryPoints'),
-  FunnelController = require('./controllers/funnelController'),
-  HotelClerk = require('./core/hotelClerk'),
-  IndexCache = require('./core/indexCache'),
-  InternalEngine = require('../services/internalEngine'),
-  GarbageCollector = require('../services/garbageCollector'),
-  Notifier = require('./core/notifier'),
-  PassportWrapper = require('./core/auth/passportWrapper'),
-  PluginsManager = require('./core/plugins/pluginsManager'),
+  Dsl = require('./lib/api/dsl'),
+  EntryPoints = require('./lib/api/core/entryPoints'),
+  FunnelController = require('./lib/api/controllers/funnelController'),
+  HotelClerk = require('./lib/api/core/hotelClerk'),
+  IndexCache = require('./lib/api/core/indexCache'),
+  InternalEngine = require('./lib/services/internalEngine'),
+  GarbageCollector = require('./lib/services/garbageCollector'),
+  Notifier = require('./lib/api/core/notifier'),
+  PassportWrapper = require('./lib/api/core/auth/passportWrapper'),
+  PluginsManager = require('./lib/api/core/plugins/pluginsManager'),
   Promise = require('bluebird'),
-  Cli = require('./cli'),
-  CliController = require('./controllers/cliController'),
-  Repositories = require('./core/models/repositories'),
-  RouterController = require('./controllers/routerController'),
-  Services = require('../services'),
-  Statistics = require('./core/statistics'),
-  TokenManager = require('./core/auth/tokenManager'),
-  Validation = require('./core/validation'),
+  Cli = require('./lib/api/cli'),
+  CliController = require('./lib/api/controllers/cliController'),
+  Repositories = require('./lib/api/core/models/repositories'),
+  RouterController = require('./lib/api/controllers/routerController'),
+  Services = require('./lib/services'),
+  Statistics = require('./lib/api/core/statistics'),
+  TokenManager = require('./lib/api/core/auth/tokenManager'),
+  Validation = require('./lib/api/core/validation'),
   Request = require('kuzzle-common-objects').Request;
 
 /**
@@ -29,10 +29,10 @@ var
  */
 function Kuzzle () {
   /** @type {KuzzleConfiguration} */
-  this.config = require('../config');
+  this.config = require('lib/config');
   this.config.version = packageInfo.version;
 
-  this.rootPath = path.resolve(path.join(__dirname, '..', '..'));
+  this.rootPath = __dirname;
 
   this.services = new Services(this);
   this.cli = new Cli(this);
@@ -81,7 +81,7 @@ function Kuzzle () {
 
     return this.internalEngine.deleteIndex()
       .then(response => {
-        var promises = ['internalCache', 'memoryStorage']
+        const promises = ['internalCache', 'memoryStorage']
           .map(id => this.services.list[id].flushdb());
 
         return Promise.all(promises)
@@ -143,6 +143,9 @@ function Kuzzle () {
       });
   };
 
+  this.addPlugin = function addPlugin (pluginName, pluginConstructor, pluginConfig) {
+
+  }
 }
 
 // Add capability to listen/emit events
@@ -162,7 +165,7 @@ Kuzzle.prototype.constructor = Kuzzle;
  * @param {Kuzzle} kuzzle
  */
 function registerErrorHandlers(kuzzle) {
-  var coreDumpSigals = {
+  const coreDumpSigals = {
     SIGHUP: 1,
     // SIGINT: 2,
     SIGQUIT: 3,
@@ -175,7 +178,7 @@ function registerErrorHandlers(kuzzle) {
     // SIGBUS: 10, can not be handled
     SIGTERM: 15,
   };
-  var request = new Request({
+  const request = new Request({
     controller: 'actions',
     action: 'dump',
     body: {}
