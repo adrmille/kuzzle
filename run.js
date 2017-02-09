@@ -1,12 +1,11 @@
 const
   Kuzzle = require('./index'),
   kuzzle = new Kuzzle({
-    custom: 'configuration'
+    rootPath: __dirname
   }),
-  authLocalPlugin = require('plugins/enabled/kuzzle-plugin-auth-passport-local'),
-  loggerPlugin = require('plugins/enabled/kuzzle-plugin-logger');
+  authLocalPlugin = require('plugins/enabled/kuzzle-plugin-auth-passport-local');
 
 kuzzle
-  .addPlugin(authLocalPlugin, {})
-  .addPlugin(loggerPlugin, {threads: 1})
+  .registerPlugin('kuzzle-plugin-auth-passport-local', authLocalPlugin, {})
+  .registerThreadPlugin('kuzzle-plugin-logger', 'plugins/enabled/kuzzle-plugin-logger', {threads: 1})
   .start();
