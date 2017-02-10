@@ -1,8 +1,7 @@
 {
   "apps": [{
     "name"         : "KuzzleServer",
-    "script"       : "bin/kuzzle",
-    "args"         : ["start"],
+    "script"       : "run.js",
     "watch"        : ["lib", "config", "bin", "default.config.js"],
     "ignore_watch" : ["node_modules"],
     "node_args": "--inspect"
