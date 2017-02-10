@@ -1,8 +1,6 @@
 const
   Kuzzle = require('./index'),
-  kuzzle = new Kuzzle({
-    rootPath: __dirname
-  }),
+  kuzzle = new Kuzzle(__dirname, {}),
   authLocalPlugin = require('plugins/enabled/kuzzle-plugin-auth-passport-local');
 
 kuzzle
