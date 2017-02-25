@@ -75,7 +75,7 @@ ApiWebsocket.prototype.send = function (msg, getAnswer, socketName, retryCount) 
     listen = (getAnswer !== undefined) ? getAnswer : true;
 
   if (!retryCount) {
-    retryCount = 0
+    retryCount = 0;
   }
 
   if (!msg.requestId) {
@@ -103,7 +103,7 @@ ApiWebsocket.prototype.send = function (msg, getAnswer, socketName, retryCount) 
         }
 
         if (retryCount < 3 && result.error && result.status === 500) {
-          return this.send(msg, getAnswer, socketName, ++retryCount)
+          return this.send(msg, getAnswer, socketName, ++retryCount);
         }
 
         if (result.error && result.status !== 206) {

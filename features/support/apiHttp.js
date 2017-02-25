@@ -145,7 +145,7 @@ ApiHttp.prototype.apiBasePath = function (path) {
  */
 ApiHttp.prototype.callApi = function (options, retryCount) {
   if (!retryCount) {
-    retryCount = 0
+    retryCount = 0;
   }
 
   if (this.world.currentUser && this.world.currentUser.token) {
@@ -159,16 +159,14 @@ ApiHttp.prototype.callApi = function (options, retryCount) {
 
 
   return new Promise((resolve, reject) => {
-    error.statusCode
-
     rp(options)
       .then(result => resolve(result))
       .catch(error => {
         if (retryCount < 3 && error.statusCode === 500) {
-          return this.callApi = function (options, ++retryCount)
+          return this.callApi = function (options, ++retryCount);
         }
 
-        return reject(error)
+        return reject(error);
       })
   })
 };
