@@ -167,7 +167,7 @@ ApiHttp.prototype.callApi = function (options, retryCount) {
         }
 
         return reject(error);
-      })
+      });
   })
 };
 
