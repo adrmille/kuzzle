@@ -163,7 +163,7 @@ ApiHttp.prototype.callApi = function (options, retryCount) {
       .then(result => resolve(result))
       .catch(error => {
         if (retryCount < 3 && error.statusCode === 500) {
-          return this.callApi = function (options, retryCount+1);
+          return this.callApi(options, ++retryCount);
         }
 
         return reject(error);
