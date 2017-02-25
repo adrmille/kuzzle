@@ -168,7 +168,7 @@ ApiHttp.prototype.callApi = function (options, retryCount) {
 
         return reject(error);
       });
-  })
+  });
 };
 
 ApiHttp.prototype.get = function (id, index) {
