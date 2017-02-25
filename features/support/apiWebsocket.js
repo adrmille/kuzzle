@@ -69,10 +69,14 @@ ApiWebsocket.prototype.unsubscribe = function (room, socketName) {
   return this.send(msg, false, socketName);
 };
 
-ApiWebsocket.prototype.send = function (msg, getAnswer, socketName) {
+ApiWebsocket.prototype.send = function (msg, getAnswer, socketName, retryCount) {
   var
     routename = 'kuzzle',
     listen = (getAnswer !== undefined) ? getAnswer : true;
+
+  if (!retryCount) {
+    retryCount = 0
+  }
 
   if (!msg.requestId) {
     msg.requestId = uuid.v4();
@@ -96,6 +100,10 @@ ApiWebsocket.prototype.send = function (msg, getAnswer, socketName) {
           Object.assign(error, msg);
 
           return reject(error);
+        }
+
+        if (retryCount < 3 && result.error && result.status === 500) {
+          return this.send(msg, getAnswer, socketName, ++retryCount)
         }
 
         if (result.error && result.status !== 206) {

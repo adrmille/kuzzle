@@ -143,7 +143,11 @@ ApiHttp.prototype.apiBasePath = function (path) {
  * @param options
  * @return {Promise.<IncomingMessage>}
  */
-ApiHttp.prototype.callApi = function (options) {
+ApiHttp.prototype.callApi = function (options, retryCount) {
+  if (!retryCount) {
+    retryCount = 0
+  }
+
   if (this.world.currentUser && this.world.currentUser.token) {
     if (!options.headers) {
       options.headers = {};
@@ -153,7 +157,20 @@ ApiHttp.prototype.callApi = function (options) {
   options.json = true;
   options.forever = true;
 
-  return rp(options);
+
+  return new Promise((resolve, reject) => {
+    error.statusCode
+
+    rp(options)
+      .then(result => resolve(result))
+      .catch(error => {
+        if (retryCount < 3 && error.statusCode === 500) {
+          return this.callApi = function (options, ++retryCount)
+        }
+
+        return reject(error)
+      })
+  })
 };
 
 ApiHttp.prototype.get = function (id, index) {
