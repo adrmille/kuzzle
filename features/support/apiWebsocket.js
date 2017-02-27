@@ -102,10 +102,6 @@ ApiWebsocket.prototype.send = function (msg, getAnswer, socketName, retryCount) 
           return reject(error);
         }
 
-        if (retryCount < 3 && result.error && result.status === 500) {
-          return this.send(msg, getAnswer, socketName, ++retryCount);
-        }
-
         if (result.error && result.status !== 206) {
           let error = new Error(result.error.stack);
           Object.assign(error, result);

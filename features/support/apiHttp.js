@@ -157,18 +157,7 @@ ApiHttp.prototype.callApi = function (options, retryCount) {
   options.json = true;
   options.forever = true;
 
-
-  return new Promise((resolve, reject) => {
-    rp(options)
-      .then(result => resolve(result))
-      .catch(error => {
-        if (retryCount < 3 && error.statusCode === 500) {
-          return this.callApi(options, ++retryCount);
-        }
-
-        return reject(error);
-      });
-  });
+  return rp(options);
 };
 
 ApiHttp.prototype.get = function (id, index) {
