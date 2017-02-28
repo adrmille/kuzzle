@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+#set -e
 
 ELASTIC_HOST=${kuzzle_services__db__host:-elasticsearch}
 ELASTIC_PORT=${kuzzle_services__db__port:-9200}
@@ -28,5 +28,6 @@ fi
 echo "[$(date --rfc-3339 seconds)] - Starting Kuzzle..."
 
 pm2 start --silent /config/pm2.json
+pm2 logs &
 npm test
 npm run codecov
