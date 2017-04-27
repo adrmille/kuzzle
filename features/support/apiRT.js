@@ -559,7 +559,6 @@ ApiRT.prototype.getServerConfig = function () {
   return this.send(msg);
 };
 
-
 ApiRT.prototype.login = function (strategy, credentials) {
   const
     msg = {
@@ -854,6 +853,15 @@ ApiRT.prototype.searchUsers = function (query, args) {
   }
 
   return this.send(msg);
+};
+
+ApiRT.prototype.createOrReplaceUser = function (body, id) {
+  return this.send({
+    controller: 'security',
+    action: 'createOrReplaceUser',
+    body: body,
+    _id: id
+  });
 };
 
 ApiRT.prototype.scrollUsers = function (scrollId) {

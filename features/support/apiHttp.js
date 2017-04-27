@@ -823,6 +823,14 @@ ApiHttp.prototype.searchUsers = function (query, args) {
   return this.callApi(options);
 };
 
+ApiHttp.prototype.createOrReplaceUser = function (body, id) {
+  return this.callApi({
+    url: this.apiPath('users/' + id),
+    method: 'PUT',
+    body
+  });
+};
+
 ApiHttp.prototype.scrollUsers = function (scrollId) {
   const options = {
     url: this.apiPath('users/_scroll/' + scrollId),

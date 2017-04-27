@@ -34,7 +34,7 @@ module.exports = function () {
   });
 
 
-  this.When(/^I (can't )?create a (restricted )?user "(.*?)" with id "(.*?)"$/, {timeout: 20000}, function (not, isRestricted, user, id, callback) {
+  this.When(/^I (can't )?create a (new )?(restricted )?user "(.*?)" with id "(.*?)"$/, {timeout: 20000}, function (not, isNew, isRestricted, user, id, callback) {
     var
       userObject = this.users[user],
       method;
@@ -42,8 +42,11 @@ module.exports = function () {
     if (isRestricted) {
       method = 'createRestrictedUser';
     }
-    else {
+    else if (isNew) {
       method = 'createUser';
+    }
+    else {
+      method = 'createOrReplaceUser';
     }
 
     id = this.idPrefix + id;
