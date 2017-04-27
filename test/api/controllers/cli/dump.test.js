@@ -155,9 +155,6 @@ describe('Test: dump', () => {
           ctime: 3
         });
 
-      const f = mockrequire.reRequire('../../../../lib/api/controllers/cli/dump');
-      dump = f(kuzzle);
-
       return dump()
         .then(() => {
           should(fsStub.createReadStream)
