@@ -32,7 +32,7 @@ describe('Test: hotelClerk.removeRooms', () => {
   beforeEach(() => {
     kuzzle = new KuzzleMock();
     kuzzle.hotelClerk = new HotelClerk(kuzzle);
-    kuzzle.dsl = new Dsl();
+    kuzzle.dsl = new Dsl(kuzzle);
 
     context = {connectionId, token: {userId: ''}, user: {_id: ''}};
 
